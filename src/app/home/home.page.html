@@ -1,20 +1,62 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+  <ion-toolbar color="primary">
+    <ion-title class="ion-text">Contacts List</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" color="light">
+  <ion-searchbar
+    (ionChange)="filterContacts($event.detail.value)"
+    placeholder="Search"
+  ></ion-searchbar>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="arrow-down-outline"
+      pullingText="Pull to refresh..."
+      refreshingSpinner="circles"
+    >
+    </ion-refresher-content>
+  </ion-refresher>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+  <ion-list lines="full" class="ion-padding">
+    <ion-item *ngFor="let contact of filteredContacts" class="contact-item">
+      <ion-label>
+        <h2>{{ contact.fullName }}</h2>
+        <p>{{ contact.phone }}</p>
+      </ion-label>
+      <ion-buttons slot="end">
+        <ion-button
+          fill="clear"
+          (click)="navigateToEditPage(contact)"
+          class="edit-button"
+        >
+          <ion-icon name="pencil" color="primary"></ion-icon>
+        </ion-button>
+        <ion-button
+          fill="clear"
+          (click)="confirmDeleteContact(contact)"
+          class="delete-button"
+        >
+          <ion-icon name="trash" color="danger"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-item>
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="navigateToAddContactPage()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+  <!-- Add infinite scroll here -->
+  <ion-infinite-scroll
+    (ionInfinite)="loadMoreContacts($event)"
+    threshold="1000px"
+  >
+    <ion-infinite-scroll-content
+      loadingSpinner="crescent"
+      loadingText="Loading more contacts..."
+    >
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>

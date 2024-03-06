@@ -1,0 +1,54 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Add New Contact</ion-title>
+    <!-- <ion-buttons slot="end">
+      <ion-button (click)="saveContact()">Save</ion-button>
+    </ion-buttons> -->
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form [formGroup]="contactForm" (ngSubmit)="saveContact()">
+    <ion-list>
+      <ion-item>
+        <ion-label position="stacked">Name</ion-label>
+        <ion-input
+          type="text"
+          placeholder="Enter name"
+          formControlName="contactName"
+          ></ion-input>
+      </ion-item>
+      <ion-item *ngIf="isFieldInvalid('contactName')">
+        <ion-text color="danger">{{ getErrorMessage('contactName') }}</ion-text>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Email</ion-label>
+        <ion-input
+          type="email"
+          placeholder="Enter email"
+          formControlName="contactEmail"
+          ></ion-input>
+      </ion-item>
+      <ion-item *ngIf="isFieldInvalid('contactEmail')">
+        <ion-text color="danger">{{ getErrorMessage('contactEmail') }}</ion-text>
+      </ion-item>
+
+      <ion-item>
+        <ion-label position="stacked">Phone Number</ion-label>
+        <ion-input
+          type="tel"
+          placeholder="Enter phone number"
+          formControlName="contactPhone"
+          ></ion-input>
+      </ion-item>
+      <ion-item *ngIf="isFieldInvalid('contactPhone')">
+        <ion-text color="danger">{{ getErrorMessage('contactPhone') }}</ion-text>
+      </ion-item>
+    </ion-list>
+    <ion-button expand="full" type="submit" [disabled]="contactForm.invalid">Save</ion-button>
+  </form>
+</ion-content>
